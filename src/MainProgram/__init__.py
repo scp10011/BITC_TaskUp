@@ -1,5 +1,5 @@
-#!/usr/bin/python
-# -*- coding:utf-8 -*-
+#-*-coding:UTF-8-*-
+#!C:\python27
 import InputFunction,text,LandFunction,NetworkFunction
 import random
 import getpass
@@ -46,8 +46,8 @@ def uptk():
                 print log[38]
                 open('cookie.txt','w').truncate()
                 open('cookie.txt','w').close()
-                open('userlog','w').truncate()
-                open('userlog','w').close()
+                open('Land','w').truncate()
+                open('Land','w').close()
                 time.sleep(2)
                 continue
             elif LogFlag and Code==200:
@@ -126,7 +126,7 @@ if __name__ == '__main__':
         qk()
         print('%-5s%-5s' % (log[21],log[36]))
         for i in range(1, 3 + 1):
-            print('%-5s%-5s' % (i,log[32+i]))
+            print('%-5s%-5s' % (i,log[99+i]))
         print('%-5s%-5s' % (0,log[29]))
         Options = {0:uptk,1:copy,2:down,-1:Endr}
         Option = InputFunction.inputsn(32,3)

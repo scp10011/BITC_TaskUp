@@ -1,5 +1,5 @@
-#!/usr/bin/python
-# -*- coding:utf-8 -*-
+#-*-coding:UTF-8-*-
+#!C:\python27
 import text
 import msvcrt,sys
 log = text.text()

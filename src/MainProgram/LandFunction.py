@@ -1,5 +1,5 @@
-#!/usr/bin/python
-# -*- coding:utf-8 -*-
+#-*-coding:UTF-8-*-
+#!C:\python27
 import InputFunction,text
 log = text.text()
 def inuserlog(flag):
@@ -15,7 +15,7 @@ def ins():
     return username,password
 
 def load():
-    users = open('userlog','r').read()
+    users = open('Land','r').read()
     if users !='':
         if InputFunction.inputyn(11) :
             users = users.split("$*$")
@@ -26,7 +26,7 @@ def load():
             username,password = ins()
             save = InputFunction.inputyn(10)
             if save == 1:
-                userlog = open('userlog','w')
+                userlog = open('Land','w')
                 userlog.write(str(username))
                 userlog.write('$*$')
                 userlog.write(str(password))

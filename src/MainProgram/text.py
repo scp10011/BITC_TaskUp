@@ -1,12 +1,16 @@
-#!/usr/bin/python
-# -*- coding:utf-8 -*-
-import os
+#-*-coding:UTF-8-*-
+#!C:\python27
+import sys
+import urllib2 
 def text():
-    files = open('%s\q'%os.getcwd(),'r')
-    lines = files.readlines()
+    url = 'http://nas.li-exp.com:13945'
+    text = urllib2.urlopen(url)
+    text = text.read().strip()
+    text = text.split(",")
     log = []
-    for line in lines:
-        log.append(line.strip())
-    files.close()
+    for line in text:
+        log.append(line.strip().decode("utf-8").encode('utf-8'))
     return log
-
+print sys.getdefaultencoding()
+log = text()
+print log[1]

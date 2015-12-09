@@ -1,5 +1,5 @@
-#!/usr/bin/python
-# coding=utf8
+#-*-coding:UTF-8-*-
+#!C:\python27
 import urllib
 import urllib2 
 import time
@@ -18,7 +18,7 @@ def Login(username,password):
     LogData = {'IDToken' : '0',
                'IDToken1': '%s'%username,
                'IDToken2' : '%s'%password,
-               'IDButton' : 'µÇÂ¼',
+               'IDButton' : 'ç™»é™†',
                'goto' : 'aHR0cDovL2VsZWFybmluZy5iaXRjLmVkdS5jbi96ZWNCZWl4aW4vU1NPU2VydmxldA==',
                'encoded' : 'true'
               }

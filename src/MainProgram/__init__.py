@@ -13,6 +13,7 @@ import urllib2
 import cookielib
 import win32ui,win32api,win32con
 from bs4 import BeautifulSoup
+
 def qk():
     os.system('cls')
     logtext()
@@ -184,7 +185,7 @@ def copy():
             l = 0
             for i in DataProcessing_:
                 l+=1
-                print('%-5s%-5s%-45s%-20s' % (l,i[2].decode("utf-8").encode('gbk') ,i[3].decode("utf-8").encode('gbk') ,i[4].decode("utf-8").encode('gbk')))
+                print('%-5s%-5s%-45s%-20s' % (l,i[2].decode('utf-8').encode('gbk') ,i[3].decode("utf-8").encode('gbk') ,i[4].decode("utf-8").encode('gbk')))
             print('%-5s%-5s' % ('0',log[29]))
             cla = InputFunction.inputsn(22,len(DataProcessing_))
             if cla == -1:

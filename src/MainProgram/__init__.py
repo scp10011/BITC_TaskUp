@@ -59,6 +59,7 @@ def uptk():
                 print log[39]
                 time.sleep(2)
                 continue
+    NetworkFunction.cookie.save(ignore_discard=True, ignore_expires=True)
     while 1:
         Uuid = NetworkFunction.UUID()
         Data = NetworkFunction.UuidData(Uuid)
@@ -110,6 +111,7 @@ def uptk():
             qk()
             print x[3][1].decode("utf-8").encode('gbk')
             time.sleep(2)
+        NetworkFunction.cookie.save(ignore_discard=True, ignore_expires=True)
     qk()
     
 def copy():

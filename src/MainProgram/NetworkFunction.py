@@ -28,7 +28,6 @@ def Login(username,password):
     LogData = urllib.urlencode(LogData)
     UidRequest = urllib2.Request(LogUrl, LogData)  
     UidResponse = urllib2.urlopen(UidRequest)
-    cookie.save(ignore_discard=True, ignore_expires=True)
     LogText = UidResponse.read()
     LogSoup = BeautifulSoup(LogText, "html.parser")
     LogZT = LogSoup.title.string

@@ -24,8 +24,7 @@ def load():
             return username,password
         else :
             username,password = ins()
-            save = InputFunction.inputyn(10)
-            if save == 1:
+            if InputFunction.inputyn(10):
                 userlog = open('Land','w')
                 userlog.write(str(username))
                 userlog.write('$*$')

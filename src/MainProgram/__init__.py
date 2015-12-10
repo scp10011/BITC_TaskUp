@@ -40,8 +40,7 @@ def uptk():
             print log[40]
         else :
             print log[15]
-            zt = NetworkFunction.Login(username,password)
-            LogFlag,Code = NetworkFunction.LoginProcessing(zt)
+            LogFlag,Code = NetworkFunction.Login(username,password)
             if not LogFlag and Code==200:
                 qk()
                 print log[38]
@@ -117,8 +116,7 @@ def copy():
     def logA(username,password):
         while 1:
             print log[15]
-            zt = NetworkFunction.Login(username,password)
-            LogFlag,Code = NetworkFunction.LoginProcessing(zt)
+            LogFlag,Code = NetworkFunction.Login(username,password)
             if not LogFlag and Code==200:
                 qk()
                 print log[38]
@@ -134,69 +132,67 @@ def copy():
                 time.sleep(2)
                 continue
         while 1:
+            fomart = 'abcdefghijklmnopqrstuvwxyz0123456789^$.*+-?=!:|\/()[]{} '
             Uuid = NetworkFunction.UUID()
             Data = NetworkFunction.UuidData(Uuid)
             DataProcessing_ = NetworkFunction.DataProcessing(Data)
             tasklist = []
             lenlist = []
+            TaskProcessing_ = []
+            di = 0
+            PrintDataProcessing_ = DataProcessing_[:]
             for i in range(0, (len(DataProcessing_)-1) + 1):
                 task_ = NetworkFunction.task(DataProcessing_[i][0],DataProcessing_[i][1],Uuid)
                 TaskProcessing_ = NetworkFunction.TaskProcessing(task_)
-                tasklist.append(TaskProcessing_)
+                if TaskProcessing_ != []:
+                    tasklist.append(TaskProcessing_)
+                else :
+                    del PrintDataProcessing_[i-di]
+                    di+=1
                 lenlist.append(len(TaskProcessing_))
-            print 
-            for l in DataProcessing_:
-                print('%-20s' % (l[3].decode("utf-8").encode('gbk'))),
+            os.system('mode con cols=200 lines=50')
+            qk()
+            print log[44]
+            for l in PrintDataProcessing_:
+                PrintData = str(l[3].decode("utf-8").encode('gbk'))[0:14].center(16)
+                PrintData = PrintData.lower()
+                qweData = 0
+                for c in PrintData:
+                    if c in fomart:
+                       qweData+=1
+                if qweData%2 == 0:
+                    lens = 14
+                else :
+                    lens = 13
+                print('%-5s%-16.16s%-4s' % (log[46].center(5),str(l[3].decode("utf-8").encode('gbk'))[0:lens].center(16),log[47].center(4))),
             print ''
-            for li in range(0, max(lenlist) + 1):
+            for li in range(0, (max(lenlist)-1) + 1):
                 for ll in range(0, (len(DataProcessing_)-1) + 1):
                     try:
-                        print ('%-20s' % (tasklist[ll][li][1].decode("utf-8").encode('gbk'))),
+                        PrintData = str(tasklist[ll][li][1].decode("utf-8").encode('gbk'))[0:14].center(16)
+                        PrintData = PrintData.lower()
+                        qweData = 0
+                        for c in PrintData:
+                            if c in fomart:
+                                qweData+=1
+                                if qweData%2 == 0:
+                                    lens = 14
+                                else :
+                                    lens = 13
+                        print ('%-5s%-16.16s%-4s' % (str(((ll+1)*100+li+1)).center(5),str(tasklist[ll][li][1].decode("utf-8").encode('gbk'))[0:lens].center(16),''.center(4))),
                     except:
-                        print "",
-                print ''
+                        print ('%-5s%-16.16s%-4s' % (''.center(5),"".center(20),''.center(4))),
+                print ''    
+            time.sleep(20)
+            break
             
         
-    def logB(username,password):
-        while 1:
-            print log[15]
-            zt = NetworkFunction.Login(username,password)
-            LogFlag,Code = NetworkFunction.LoginProcessing(zt)
-            if not LogFlag and Code==200:
-                qk()
-                print log[38]
-                time.sleep(2)
-                continue
-            elif LogFlag and Code==200:
-                qk()
-                print log[17]
-                break
-            else :
-                qk()
-                print log[39]
-                time.sleep(2)
-                continue
-        while 1:
-            Uuid = NetworkFunction.UUID()
-            Data = NetworkFunction.UuidData(Uuid)
-            DataProcessing_ = NetworkFunction.DataProcessing(Data)
-            qk()
-            print('%-5s%-5s%-45s%-20s' % (log[21],log[20],log[18],log[19]))
-            l = 0
-            for i in DataProcessing_:
-                l+=1
-                print('%-5s%-5s%-45s%-20s' % (l,i[2].decode('utf-8').encode('gbk') ,i[3].decode("utf-8").encode('gbk') ,i[4].decode("utf-8").encode('gbk')))
-            print('%-5s%-5s' % ('0',log[29]))
-            cla = InputFunction.inputsn(22,len(DataProcessing_))
-            if cla == -1:
-                break
-            CourseList = NetworkFunction.course(DataProcessing_[cla][0],DataProcessing_[cla][1])
-            task_ = NetworkFunction.task(DataProcessing_[cla][0],DataProcessing_[cla][1],Uuid)
-            TaskProcessing_ = NetworkFunction.TaskProcessing(task_)
+
     while 1:
         flag = False
         print log[42]
-        oneusername,onepassword = LandFunction.ins()
+        oneusername,onepassword = LandFunction.inuserlog(flag)
+        #oneusername,onepassword = LandFunction.ins()
         #print log[43]
         #twousername,twopassword = LandFunction.ins()
         logA(oneusername,onepassword)
@@ -207,7 +203,6 @@ def Endr():
     sys.exit()
 
 if __name__ == '__main__':
-    
     log = text.text()
     while 1:
         qk()

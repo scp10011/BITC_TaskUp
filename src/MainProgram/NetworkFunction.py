@@ -13,6 +13,8 @@ cookie = cookielib.MozillaCookieJar(Cookiename)
 handler = urllib2.HTTPCookieProcessor(cookie)
 opener = urllib2.build_opener(handler)
 urllib2.install_opener(opener)
+
+
 def Login(username,password):
     LogUrl = 'http://ids2.bitc.edu.cn/amserver/UI/Login'
     LogData = {'IDToken' : '0',
@@ -27,9 +29,6 @@ def Login(username,password):
     UidRequest = urllib2.Request(LogUrl, LogData)  
     UidResponse = urllib2.urlopen(UidRequest)
     cookie.save(ignore_discard=True, ignore_expires=True)
-    return UidResponse
-
-def LoginProcessing(UidResponse):
     LogText = UidResponse.read()
     LogSoup = BeautifulSoup(LogText, "html.parser")
     LogZT = LogSoup.title.string
@@ -37,6 +36,7 @@ def LoginProcessing(UidResponse):
         return True,UidResponse.code
     else:
         return False,UidResponse.code
+
     
 def UUID():
     UidUrl = 'http://elearning.bitc.edu.cn/zecBeixin/student/myCourse/myCourse.html'            

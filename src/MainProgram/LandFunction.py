@@ -1,6 +1,6 @@
 #-*-coding:UTF-8-*-
 #!C:\python27
-import InputFunction,text
+import InputFunction,text,UserSave
 log = text.text()
 def inuserlog(flag):
     if flag:
@@ -15,29 +15,26 @@ def ins():
     return username,password
 
 def load():
-    users = open('Land','r').read()
-    if users !='':
+    key=log[51]
+    text = open('Land','r')
+    if text.read() !='':
         if InputFunction.inputyn(11) :
-            users = users.split("$*$")
-            username = users[0]
-            password = users[1]
+            text.close()
+            username,password = UserSave.UserLoad(key)
             return username,password
         else :
+            text.close()
             username,password = ins()
             if InputFunction.inputyn(10):
-                userlog = open('Land','w')
-                userlog.write(str(username))
-                userlog.write('$*$')
-                userlog.write(str(password))
-                userlog.close()
-            return username,password
+                flags = UserSave.UserSave(key, username, password)
+                if flags:
+                    return username,password
+            
     else:
+        text.close()
         username,password = ins()
         if InputFunction.inputyn(10):
-            userlog = open('land','w')
-            userlog.write(str(username))
-            userlog.write('$*$')
-            userlog.write(str(password))
-            userlog.close()
-        return username,password
+            flags = UserSave.UserSave(key, username, password)
+            if flags:
+                return username,password
             

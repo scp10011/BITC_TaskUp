@@ -2,6 +2,7 @@
 #!C:\python27
 import text
 import msvcrt,sys
+
 log = text.text()
 
 def inputyn(SN):

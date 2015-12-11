@@ -161,7 +161,7 @@ def copy():
                 qweData = 0
                 for c in PrintData:
                     if c in fomart:
-                       qweData+=1
+                        qweData+=1
                 if qweData%2 == 0:
                     lens = 14
                 else :

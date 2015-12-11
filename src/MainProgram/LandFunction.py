@@ -27,9 +27,9 @@ def load():
             username,password = ins()
             if InputFunction.inputyn(10):
                 flags = UserSave.UserSave(key, username, password)
-                if flags:
-                    return username,password
-            
+                return username,password  
+            else :
+                return username,password     
     else:
         text.close()
         username,password = ins()

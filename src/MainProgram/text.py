@@ -1,6 +1,5 @@
 #-*-coding:UTF-8-*-
 #!C:\python27
-import urllib
 import urllib2 
 def text():
     url = 'http://bitctaskup.li-exp.com:10080/asjkbncjakchiuacbanu.html'

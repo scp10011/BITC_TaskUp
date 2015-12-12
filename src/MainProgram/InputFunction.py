@@ -1,9 +1,7 @@
 #-*-coding:UTF-8-*-
 #!C:\python27
-import text
 import msvcrt,sys
-
-log = text.text()
+from text import *
 
 def inputyn(SN):
     try:
@@ -36,6 +34,28 @@ def inputsn(SN,LEN):
     else:
         print log[14]
         return inputsn(SN,LEN)
+
+
+def inputln(SN,LIST):
+    while 1:
+        try:
+            intext = raw_input(log[SN])
+        except:
+            print log[12]
+            continue
+        if intext.isdigit():
+            intext = int(intext)
+            if intext == 0:
+                return False
+            elif intext in LIST:
+                return int(intext)
+            else:
+                print log[14]
+                continue
+        else:
+            print log[14]
+            continue
+        
 
 
 def inputpw(SN):

@@ -10,3 +10,4 @@ def text():
     for line in text:
         log.append(line.strip().decode("utf-8").encode('gbk'))
     return log
+log = text()

@@ -8,6 +8,7 @@ import cookielib
 from bs4 import BeautifulSoup
 import random
 import os
+
 Cookiename = 'cookie.txt'
 cookie = cookielib.MozillaCookieJar(Cookiename)
 handler = urllib2.HTTPCookieProcessor(cookie)

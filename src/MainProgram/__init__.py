@@ -13,6 +13,7 @@ import urllib2
 import cookielib
 import win32ui,win32api,win32con
 from bs4 import BeautifulSoup
+from text import *
 
 def qk():
     os.system('cls')
@@ -152,42 +153,55 @@ def copy():
                     del PrintDataProcessing_[i-di]
                     di+=1
                 lenlist.append(len(TaskProcessing_))
-            os.system('mode con cols=200 lines=50')
-            qk()
-            print log[44]
-            for l in PrintDataProcessing_:
-                PrintData = str(l[3].decode("utf-8").encode('gbk'))[0:14].center(16)
-                PrintData = PrintData.lower()
-                qweData = 0
-                for c in PrintData:
-                    if c in fomart:
-                        qweData+=1
-                if qweData%2 == 0:
-                    lens = 14
+            colsTEXT = len(PrintDataProcessing_)*27
+            os.system('mode con cols=%s lines=50'%colsTEXT)
+            TaskInList = []
+            while 1:
+                TaskIdList = []
+                qk()
+                print log[44]
+                for l in PrintDataProcessing_:
+                    PrintData = str(l[3].decode("utf-8").encode('gbk'))[0:14].center(16)
+                    PrintData = PrintData.lower()
+                    qweData = 0
+                    for c in PrintData:
+                        if c in fomart:
+                            qweData+=1
+                    if qweData%2 == 0:
+                        lens = 14
+                    else :
+                        lens = 13
+                    print('%-5s%-16.16s%-4s' % (log[46].center(5),str(l[3].decode("utf-8").encode('gbk'))[0:lens].center(16),log[47].center(4))),
+                print ''
+                for li in range(0, (max(lenlist)-1) + 1):
+                    for ll in range(0, (len(DataProcessing_)-1) + 1):
+                        try:
+                            PrintData = str(tasklist[ll][li][1].decode("utf-8").encode('gbk'))[0:14].center(16)
+                            PrintData = PrintData.lower()
+                            qweData = 0
+                            for c in PrintData:
+                                if c in fomart:
+                                    qweData+=1
+                                    if qweData%2 == 0:
+                                        lens = 14
+                                    else :
+                                        lens = 13
+                            if tasklist[ll][li][1] != '':
+                                TaskIdList.append((ll+1)*100+li+1)
+                            print ('%-5s%-16.16s%-4s' % (str(((ll+1)*100+li+1)).center(5),str(tasklist[ll][li][1].decode("utf-8").encode('gbk'))[0:lens].center(16),''.center(4))),
+                        except:
+                            print ('%-5s%-16.16s%-4s' % (''.center(5),"".center(20),''.center(4))),
+                    print ''    
+                TaskIn = InputFunction.inputln(45, TaskIdList)
+                if TaskIn:
+                    TaskInList.append(TaskIn)
                 else :
-                    lens = 13
-                print('%-5s%-16.16s%-4s' % (log[46].center(5),str(l[3].decode("utf-8").encode('gbk'))[0:lens].center(16),log[47].center(4))),
-            print ''
-            for li in range(0, (max(lenlist)-1) + 1):
-                for ll in range(0, (len(DataProcessing_)-1) + 1):
-                    try:
-                        PrintData = str(tasklist[ll][li][1].decode("utf-8").encode('gbk'))[0:14].center(16)
-                        PrintData = PrintData.lower()
-                        qweData = 0
-                        for c in PrintData:
-                            if c in fomart:
-                                qweData+=1
-                                if qweData%2 == 0:
-                                    lens = 14
-                                else :
-                                    lens = 13
-                        print ('%-5s%-16.16s%-4s' % (str(((ll+1)*100+li+1)).center(5),str(tasklist[ll][li][1].decode("utf-8").encode('gbk'))[0:lens].center(16),''.center(4))),
-                    except:
-                        print ('%-5s%-16.16s%-4s' % (''.center(5),"".center(20),''.center(4))),
-                print ''    
-            time.sleep(20)
+                    print log[52],TaskInList
+                    time.sleep(3)
+                    TaskUpList = Processing(TaskInList)
+                    break
             break
-            
+        return TaskUpList
         
 
     while 1:
@@ -197,15 +211,23 @@ def copy():
         #oneusername,onepassword = LandFunction.ins()
         #print log[43]
         #twousername,twopassword = LandFunction.ins()
-        logA(oneusername,onepassword)
+        TaskUpList = logA(oneusername,onepassword)
 
 def down():
     print 'down'
 def Endr():
     sys.exit()
 
+def Processing(TaskInList):
+    TaskUpList = []
+    for i in TaskInList:
+        clas = str(i-100)[0:1]
+        task = str(i-1)[1:3]
+        TaskUp  = clas,task
+        TaskUpList.append(TaskUp)
+    return TaskUpList
 if __name__ == '__main__':
-    log = text.text()
+    
     while 1:
         qk()
         print('%-5s%-5s' % (log[21],log[36]))

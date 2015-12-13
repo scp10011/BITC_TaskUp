@@ -58,10 +58,7 @@ def UuidData(Uuid):
     DataRequest = urllib2.Request(DataUrl, DataData)
     DataResponse = urllib2.urlopen(DataRequest)
     DataText = DataResponse.read()
-    return DataText
-
-def DataProcessing(Data):
-    DP = Data.split('{"checkType"')
+    DP = DataText.split('{"checkType"')
     list = [[] for l in range(len(DP)-1)]
     for i in range(1, (len(DP)-1) + 1):
         Processing = DP[i]
@@ -70,6 +67,7 @@ def DataProcessing(Data):
         list[(i-1)].append(re.search('(credit":)(\S*)(,"hasUpdate)',Processing).group(2))
         list[(i-1)].append(re.search('(courseName":")(\S*)(","courseNum)',Processing).group(2))
         list[(i-1)].append(re.search('(userName":")(\S*)(","userNameOrNumber)',Processing).group(2))
+        list[(i-1)].append(re.search('(chooseCourse":)(\d)',Processing).group(2))
     return list
 
 def course(courseId,classId):
@@ -94,10 +92,7 @@ def task(courseId,classId,Uuid):
     TaskRequest = urllib2.Request(TaskUrl, TaskData)
     TaskResponse = urllib2.urlopen(TaskRequest)
     TaskText = TaskResponse.read()
-    return TaskText
-
-def TaskProcessing(task):
-    TP = task.split('{"baseTaskId"')
+    TP = TaskText.split('{"baseTaskId"')
     list = [[] for l in range(len(TP)-1)]
     for i in range(1, (len(TP)-1) + 1):
         Processing = TP[i]
@@ -106,6 +101,11 @@ def TaskProcessing(task):
         list[(i-1)].append(re.search('(taskId":)(\d*)(,"taskIds)',Processing).group(2))
         list[(i-1)].append(re.search('(userTaskId":)(\d*)(}},"isStart)',Processing).group(2))
         list[(i-1)].append(re.search('({"flag":)(\d*)(,"count)',Processing).group(2))
+        Times = int(re.search('(taskTime)(.*?)(time":)(\d*)',Processing).group(4))
+        if Times>time.time()*1000:
+            list[(i-1)].append('0')
+        else :
+            list[(i-1)].append('1')
     return list
 
 def Upfile(FilesName):

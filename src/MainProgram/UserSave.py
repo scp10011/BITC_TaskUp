@@ -42,10 +42,10 @@ def UserDecrypt(base):
 
 def UserSave(username,password):
     #try:
-        userlog = open('Land','w')
-        cipher = UserEncryption(username,password)
-        userlog.write(cipher)
-        userlog.close()
+    userlog = open('Land','w')
+    cipher = UserEncryption(username,password)
+    userlog.write(cipher)
+    userlog.close()
         #return True
     #except:
         #return False

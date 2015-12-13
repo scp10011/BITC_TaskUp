@@ -8,12 +8,123 @@ import time
 import re
 import os
 import sys
+import msvcrt
 import urllib
-import urllib2 
+import urllib2
 import cookielib
+import multiprocessing
 import win32ui,win32api,win32con
 from bs4 import BeautifulSoup
 from text import *
+
+def copylandA(username,password,textqueue):
+    cookie=cookielib.CookieJar()
+    handler=urllib2.HTTPCookieProcessor(cookie)
+    opener=urllib2.build_opener(handler)
+    
+    while 1:
+        print log[15]
+        LogFlag,Code = NetworkFunction.Login(username,password)
+        if not LogFlag and Code==200:
+            qk()
+            print log[38]
+            time.sleep(2)
+            continue
+        elif LogFlag and Code==200:
+            qk()
+            print log[17]
+            break
+        else :
+            qk()
+            print log[39]
+            time.sleep(2)
+            continue
+    while 1:
+        Uuid = NetworkFunction.UUID()
+        DataProcessing_ = NetworkFunction.UuidData(Uuid)
+        if DataProcessing_ == '':
+            continue
+        tasklist = []
+        lenlist = []
+        TaskProcessing_ = []
+        DataProcessing = []
+        di = 0
+        for i in DataProcessing_:
+            if i[5]==0:
+                DataProcessing.append(i)
+        PrintDataProcessing_ = DataProcessing[:]
+        for i in range(0, (len(DataProcessing)-1) + 1):
+            TaskProcessing_ = NetworkFunction.task(DataProcessing_[i][0],DataProcessing[i][1],Uuid)
+            if TaskProcessing_ != []:
+                tasklist.append(TaskProcessing_)
+            else :
+                del PrintDataProcessing_[i-di]
+                di+=1
+            lenlist.append(len(TaskProcessing_))
+        break
+    textqueue.put('play')
+    #textqueue.put('My_is_A')
+    while 1:
+        if textqueue.qsize() == 2:
+            if textqueue.get(True) == 'play':
+                break
+    Btasklist = textqueue.get(True)
+    print 'Btasklist:'
+    print Btasklist[0][0]
+        
+def copylandB(username,password,textqueue):
+    cookie=cookielib.CookieJar()
+    handler=urllib2.HTTPCookieProcessor(cookie)
+    opener=urllib2.build_opener(handler)
+    
+    while 1:
+        print log[15]
+        LogFlag,Code = NetworkFunction.Login(username,password)
+        if not LogFlag and Code==200:
+            qk()
+            print log[38]
+            time.sleep(2)
+            continue
+        elif LogFlag and Code==200:
+            qk()
+            print log[17]
+            break
+        else :
+            qk()
+            print log[39]
+            time.sleep(2)
+            continue
+    while 1:
+        Uuid = NetworkFunction.UUID()
+        DataProcessing_ = NetworkFunction.UuidData(Uuid)
+        if DataProcessing_ == '':
+            continue
+        tasklist = []
+        lenlist = []
+        TaskProcessing_ = []
+        DataProcessing = []
+        di = 0
+        for i in DataProcessing_:
+            if i[5]==0:
+                DataProcessing.append(i)
+        PrintDataProcessing_ = DataProcessing[:]
+        for i in range(0, (len(DataProcessing)-1) + 1):
+            TaskProcessing_ = NetworkFunction.task(DataProcessing_[i][0],DataProcessing[i][1],Uuid)
+            if TaskProcessing_ != []:
+                tasklist.append(TaskProcessing_)
+            else :
+                del PrintDataProcessing_[i-di]
+                di+=1
+            lenlist.append(len(TaskProcessing_))
+        break
+    while 1:
+        if textqueue.qsize() == 1:
+            if textqueue.get(True) == 'play':
+                break
+    print len(tasklist)
+    textqueue.put('play')
+    textqueue.put(tasklist)
+
 
 def qk():
     os.system('cls')
@@ -35,19 +146,21 @@ def uptk():
                 NetworkFunction.cookie.load('cookie.txt', ignore_discard=True, ignore_expires=True)
                 qk()
                 flag = True
+                print log[58]
                 break
         username,password = LandFunction.inuserlog(flag)
+        
         if not username and not password :
-            print log[40]
+            print log[53]
+            open('Land','w').close()
+            continue
         else :
             print log[15]
             LogFlag,Code = NetworkFunction.Login(username,password)
             if not LogFlag and Code==200:
                 qk()
                 print log[38]
-                open('cookie.txt','w').truncate()
                 open('cookie.txt','w').close()
-                open('Land','w').truncate()
                 open('Land','w').close()
                 time.sleep(2)
                 continue
@@ -63,31 +176,47 @@ def uptk():
     NetworkFunction.cookie.save(ignore_discard=True, ignore_expires=True)
     while 1:
         Uuid = NetworkFunction.UUID()
-        Data = NetworkFunction.UuidData(Uuid)
-        DataProcessing_ = NetworkFunction.DataProcessing(Data)
+        DataProcessing_ = NetworkFunction.UuidData(Uuid)
+        
         qk()
-        print('%-5s%-5s%-45s%-20s' % (log[21],log[20],log[18],log[19]))
+        print('%-5s%-5s%-5s%-45s%-20s' % (log[21],log[26],log[20],log[18],log[19]))
         l = 0
+        chooseCourse = {'1':log[24],'0':log[25]}
         for i in DataProcessing_:
             l+=1
-            print('%-5s%-5s%-45s%-20s' % (l,i[2].decode("utf-8").encode('gbk') ,i[3].decode("utf-8").encode('gbk') ,i[4].decode("utf-8").encode('gbk')))
-        print('%-5s%-5s' % ('0',log[29]))
-        cla = InputFunction.inputsn(22,len(DataProcessing_))
+            print('%-5s%-5s%-5s%-45s%-20s' % (str(l).center(5),chooseCourse.get(i[5]) ,str(i[2]).decode("utf-8").encode('gbk').center(5) ,i[3].decode("utf-8").encode('gbk') ,i[4].decode("utf-8").encode('gbk')))
+        print('%-5s%-20s' % (str(l+1).center(5),log[56].center(20)))
+        print('%-5s%-20s' % ('0'.center(5),log[29].center(20)))
+        cla = InputFunction.inputsn(22,len(DataProcessing_)+1)
         if cla == -1:
             break
-        CourseList = NetworkFunction.course(DataProcessing_[cla][0],DataProcessing_[cla][1])
-        task_ = NetworkFunction.task(DataProcessing_[cla][0],DataProcessing_[cla][1],Uuid)
-        TaskProcessing_ = NetworkFunction.TaskProcessing(task_)
+        elif cla == l:
+            qk()
+            print log[58]
+            Already = 0
+            NotTask = 0
+            for CourseNumber in range(0, (len(DataProcessing_)-1) + 1):
+                CourseList = NetworkFunction.course(DataProcessing_[CourseNumber][0],DataProcessing_[CourseNumber][1])
+                Already += int(CourseList[0])
+                NotTask += int(CourseList[1])
+            print log[54],Already,log[55],NotTask
+            print log[57]
+            msvcrt.getch()
+            qk()
+            continue
+        TaskProcessing_ = NetworkFunction.task(DataProcessing_[cla][0],DataProcessing_[cla][1],Uuid)
         qk()
-        print('%-5s%-5s%-45s' % (log[21],log[26],log[27]))
+        print('%-5s%-5s%-45s' % (log[21],log[47],log[27]))
         l=0
         for i in TaskProcessing_:
             l+=1
             flag = ''
             if i[4] == '1':
-                print('%-5s%-5s%-45s' % (l,log[24] ,i[1].decode("utf-8").encode('gbk')))
-            else:
-                print('%-5s%-5s%-45s' % (l,log[25] ,i[1].decode("utf-8").encode('gbk')))
+                print('%-5s%-5s%-45s' % (l,log[48] ,i[1].decode("utf-8").encode('gbk')))
+            elif i[4] == '0' and i[5] == '1':
+                print('%-5s%-5s%-45s' % (l,log[50] ,i[1].decode("utf-8").encode('gbk')))
+            elif i[4] == '0' and i[5] == '0':
+                print('%-5s%-5s%-45s' % (l,log[49] ,i[1].decode("utf-8").encode('gbk')))
         print('%-5s%-5s' % ('0',log[28]))
         Task = InputFunction.inputsn(23,len(TaskProcessing_))
         if Task == -1:
@@ -116,102 +245,20 @@ def uptk():
     qk()
     
 def copy():
-    def logA(username,password):
-        while 1:
-            print log[15]
-            LogFlag,Code = NetworkFunction.Login(username,password)
-            if not LogFlag and Code==200:
-                qk()
-                print log[38]
-                time.sleep(2)
-                continue
-            elif LogFlag and Code==200:
-                qk()
-                print log[17]
-                break
-            else :
-                qk()
-                print log[39]
-                time.sleep(2)
-                continue
-        while 1:
-            fomart = 'abcdefghijklmnopqrstuvwxyz0123456789^$.*+-?=!:|\/()[]{} '
-            Uuid = NetworkFunction.UUID()
-            Data = NetworkFunction.UuidData(Uuid)
-            DataProcessing_ = NetworkFunction.DataProcessing(Data)
-            tasklist = []
-            lenlist = []
-            TaskProcessing_ = []
-            di = 0
-            PrintDataProcessing_ = DataProcessing_[:]
-            for i in range(0, (len(DataProcessing_)-1) + 1):
-                task_ = NetworkFunction.task(DataProcessing_[i][0],DataProcessing_[i][1],Uuid)
-                TaskProcessing_ = NetworkFunction.TaskProcessing(task_)
-                if TaskProcessing_ != []:
-                    tasklist.append(TaskProcessing_)
-                else :
-                    del PrintDataProcessing_[i-di]
-                    di+=1
-                lenlist.append(len(TaskProcessing_))
-            colsTEXT = len(PrintDataProcessing_)*27
-            os.system('mode con cols=%s lines=50'%colsTEXT)
-            TaskInList = []
-            while 1:
-                TaskIdList = []
-                qk()
-                print log[44]
-                for l in PrintDataProcessing_:
-                    PrintData = str(l[3].decode("utf-8").encode('gbk'))[0:14].center(16)
-                    PrintData = PrintData.lower()
-                    qweData = 0
-                    for c in PrintData:
-                        if c in fomart:
-                            qweData+=1
-                    if qweData%2 == 0:
-                        lens = 14
-                    else :
-                        lens = 13
-                    print('%-5s%-16.16s%-4s' % (log[46].center(5),str(l[3].decode("utf-8").encode('gbk'))[0:lens].center(16),log[47].center(4))),
-                print ''
-                for li in range(0, (max(lenlist)-1) + 1):
-                    for ll in range(0, (len(DataProcessing_)-1) + 1):
-                        try:
-                            PrintData = str(tasklist[ll][li][1].decode("utf-8").encode('gbk'))[0:14].center(16)
-                            PrintData = PrintData.lower()
-                            qweData = 0
-                            for c in PrintData:
-                                if c in fomart:
-                                    qweData+=1
-                                    if qweData%2 == 0:
-                                        lens = 14
-                                    else :
-                                        lens = 13
-                            if tasklist[ll][li][1] != '':
-                                TaskIdList.append((ll+1)*100+li+1)
-                            print ('%-5s%-16.16s%-4s' % (str(((ll+1)*100+li+1)).center(5),str(tasklist[ll][li][1].decode("utf-8").encode('gbk'))[0:lens].center(16),''.center(4))),
-                        except:
-                            print ('%-5s%-16.16s%-4s' % (''.center(5),"".center(20),''.center(4))),
-                    print ''    
-                TaskIn = InputFunction.inputln(45, TaskIdList)
-                if TaskIn:
-                    TaskInList.append(TaskIn)
-                else :
-                    print log[52],TaskInList
-                    time.sleep(3)
-                    TaskUpList = Processing(TaskInList)
-                    break
-            break
-        return TaskUpList
-        
-
     while 1:
         flag = False
         print log[42]
         oneusername,onepassword = LandFunction.inuserlog(flag)
-        #oneusername,onepassword = LandFunction.ins()
-        #print log[43]
-        #twousername,twopassword = LandFunction.ins()
-        TaskUpList = logA(oneusername,onepassword)
+        print log[43]
+        twousername,twopassword = LandFunction.inuserlog(flag)
+        textqueue = multiprocessing.Queue()
+        copylandAPlay = multiprocessing.Process(target=copylandA, args=(oneusername,onepassword,textqueue,))
+        copylandBPlay = multiprocessing.Process(target=copylandB, args=(twousername,twopassword,textqueue,))
+        copylandAPlay.start()
+        copylandBPlay.start()
+        copylandAPlay.join()
+        msvcrt.getch()
+        
 
 def down():
     print 'down'

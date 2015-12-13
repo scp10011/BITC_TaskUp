@@ -2,9 +2,9 @@
 # http://curl.haxx.se/rfc/cookie_spec.html
 # This is a generated file!  Do not edit.
 
-.bitc.edu.cn	TRUE	/	FALSE		AMAuthCookie	AQIC5wM2LY4Sfcz%2BRsuNMLvUsQ7D%2BMOdyFN8aFB364NCNZs%3D%40AAJTSQACMDI%3D%23
+.bitc.edu.cn	TRUE	/	FALSE		AMAuthCookie	AQIC5wM2LY4Sfcw1bps%2F3BG3sUihXn1AAglqvQ9Vr64HxNM%3D%40AAJTSQACMDI%3D%23
 .bitc.edu.cn	TRUE	/	FALSE		amlbcookie	02
-.bitc.edu.cn	TRUE	/	FALSE		iPlanetDirectoryPro	AQIC5wM2LY4Sfcz%2BRsuNMLvUsQ7D%2BMOdyFN8aFB364NCNZs%3D%40AAJTSQACMDI%3D%23
-elearning.bitc.edu.cn	FALSE	/	FALSE	1450021401	partCode	""
-elearning.bitc.edu.cn	FALSE	/	FALSE	1450021401	passport	$d_0fca41f6b48c1129ba3e47a2f4530e08&$s_4564
-elearning.bitc.edu.cn	FALSE	/zecBeixin/	FALSE		JSESSIONID	53BA6BD1D341D381B56746CF2A23919B
+.bitc.edu.cn	TRUE	/	FALSE		iPlanetDirectoryPro	AQIC5wM2LY4Sfcw1bps%2F3BG3sUihXn1AAglqvQ9Vr64HxNM%3D%40AAJTSQACMDI%3D%23
+elearning.bitc.edu.cn	FALSE	/	FALSE	1450107883	partCode	""
+elearning.bitc.edu.cn	FALSE	/	FALSE	1450107883	passport	$d_fc16b199270ac12f52c05d0438ee69c6&$s_5622
+elearning.bitc.edu.cn	FALSE	/zecBeixin/	FALSE		JSESSIONID	150ED52566E172C7B3AF9C0D0A83AA90

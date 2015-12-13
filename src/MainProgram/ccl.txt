@@ -1,0 +1,49 @@
+	    fomart = 'abcdefghijklmnopqrstuvwxyz0123456789^$.*+-?=!:|\/()[]{} '
+	    colsTEXT = len(PrintDataProcessing_)*27
+            os.system('mode con cols=%s lines=50'%colsTEXT)
+            TaskInList = []
+            while 1:
+                TaskIdList = []
+                qk()
+                print log[44]
+                for l in PrintDataProcessing_:
+                    PrintData = str(l[3].decode("utf-8").encode('gbk'))[0:14].center(16)
+                    PrintData = PrintData.lower()
+                    qweData = 0
+                    for c in PrintData:
+                        if c in fomart:
+                            qweData+=1
+                    if qweData%2 == 0:
+                        lens = 14
+                    else :
+                        lens = 13
+                    print('%-5s%-16.16s%-4s' % (log[46].center(5),str(l[3].decode("utf-8").encode('gbk'))[0:lens].center(16),log[47].center(4))),
+                print ''
+                for li in range(0, (max(lenlist)-1) + 1):
+                    for ll in range(0, (len(DataProcessing_)-1) + 1):
+                        try:
+                            PrintData = str(tasklist[ll][li][1].decode("utf-8").encode('gbk'))[0:14].center(16)
+                            PrintData = PrintData.lower()
+                            qweData = 0
+                            for c in PrintData:
+                                if c in fomart:
+                                    qweData+=1
+                                    if qweData%2 == 0:
+                                        lens = 14
+                                    else :
+                                        lens = 13
+                            if tasklist[ll][li][1] != '':
+                                TaskIdList.append((ll+1)*100+li+1)
+                            print ('%-5s%-16.16s%-4s' % (str(((ll+1)*100+li+1)).center(5),str(tasklist[ll][li][1].decode("utf-8").encode('gbk'))[0:lens].center(16),''.center(4))),
+                        except:
+                            print ('%-5s%-16.16s%-4s' % (''.center(5),"".center(20),''.center(4))),
+                    print ''    
+                TaskIn = InputFunction.inputln(45, TaskIdList)
+                if TaskIn:
+                    TaskInList.append(TaskIn)
+                else :
+                    print log[52],TaskInList
+                    time.sleep(3)
+                    TaskUpList = Processing(TaskInList)
+                    break
+            break

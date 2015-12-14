@@ -16,8 +16,8 @@ def GetKeyID():
         encrypt_str += physical_disk.SerialNumber.strip()
     for board_id in c.Win32_BaseBoard():
         encrypt_str += board_id.SerialNumber.strip()
-    for bios_id in c.Win32_BIOS():
-        encrypt_str += bios_id.SerialNumber.strip()
+    #for bios_id in c.Win32_BIOS():
+        #encrypt_str += bios_id.SerialNumber.strip()
     for mac in c.Win32_NetworkAdapter():
         if mac.MACAddress != None:
             encrypt_str += mac.MACAddress

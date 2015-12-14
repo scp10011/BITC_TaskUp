@@ -1,6 +1,6 @@
 #-*-coding:UTF-8-*-
 #!C:\python27
-import InputFunction,text,LandFunction,NetworkFunction
+import InputFunction,text,LandFunction,NetworkFunction,CopyProcessing
 import random
 import getpass
 import string
@@ -17,115 +17,6 @@ import win32ui,win32api,win32con
 from bs4 import BeautifulSoup
 from text import *
 
-def copylandA(username,password,textqueue):
-    cookie=cookielib.CookieJar()
-    handler=urllib2.HTTPCookieProcessor(cookie)
-    opener=urllib2.build_opener(handler)
-    
-    while 1:
-        print log[15]
-        LogFlag,Code = NetworkFunction.Login(username,password)
-        if not LogFlag and Code==200:
-            qk()
-            print log[38]
-            time.sleep(2)
-            continue
-        elif LogFlag and Code==200:
-            qk()
-            print log[17]
-            break
-        else :
-            qk()
-            print log[39]
-            time.sleep(2)
-            continue
-    while 1:
-        Uuid = NetworkFunction.UUID()
-        DataProcessing_ = NetworkFunction.UuidData(Uuid)
-        if DataProcessing_ == '':
-            continue
-        tasklist = []
-        lenlist = []
-        TaskProcessing_ = []
-        DataProcessing = []
-        di = 0
-        for i in DataProcessing_:
-            if i[5]==0:
-                DataProcessing.append(i)
-        PrintDataProcessing_ = DataProcessing[:]
-        for i in range(0, (len(DataProcessing)-1) + 1):
-            TaskProcessing_ = NetworkFunction.task(DataProcessing_[i][0],DataProcessing[i][1],Uuid)
-            if TaskProcessing_ != []:
-                tasklist.append(TaskProcessing_)
-            else :
-                del PrintDataProcessing_[i-di]
-                di+=1
-            lenlist.append(len(TaskProcessing_))
-        break
-    textqueue.put('play')
-    #textqueue.put('My_is_A')
-    while 1:
-        if textqueue.qsize() == 2:
-            if textqueue.get(True) == 'play':
-                break
-    Btasklist = textqueue.get(True)
-    print 'Btasklist:'
-    print Btasklist[0][0]
-        
-def copylandB(username,password,textqueue):
-    cookie=cookielib.CookieJar()
-    handler=urllib2.HTTPCookieProcessor(cookie)
-    opener=urllib2.build_opener(handler)
-    
-    while 1:
-        print log[15]
-        LogFlag,Code = NetworkFunction.Login(username,password)
-        if not LogFlag and Code==200:
-            qk()
-            print log[38]
-            time.sleep(2)
-            continue
-        elif LogFlag and Code==200:
-            qk()
-            print log[17]
-            break
-        else :
-            qk()
-            print log[39]
-            time.sleep(2)
-            continue
-    while 1:
-        Uuid = NetworkFunction.UUID()
-        DataProcessing_ = NetworkFunction.UuidData(Uuid)
-        if DataProcessing_ == '':
-            continue
-        tasklist = []
-        lenlist = []
-        TaskProcessing_ = []
-        DataProcessing = []
-        di = 0
-        for i in DataProcessing_:
-            if i[5]==0:
-                DataProcessing.append(i)
-        PrintDataProcessing_ = DataProcessing[:]
-        for i in range(0, (len(DataProcessing)-1) + 1):
-            TaskProcessing_ = NetworkFunction.task(DataProcessing_[i][0],DataProcessing[i][1],Uuid)
-            if TaskProcessing_ != []:
-                tasklist.append(TaskProcessing_)
-            else :
-                del PrintDataProcessing_[i-di]
-                di+=1
-            lenlist.append(len(TaskProcessing_))
-        break
-    while 1:
-        if textqueue.qsize() == 1:
-            if textqueue.get(True) == 'play':
-                break
-    print len(tasklist)
-    textqueue.put('play')
-    textqueue.put(tasklist)
-
-
 def qk():
     os.system('cls')
     logtext()
@@ -138,12 +29,13 @@ def logtext():
     print log[5]
 
 def uptk():
+    cookie = NetworkFunction.Cookie()
     qk()
     while 1:
         flag = False
         if open('cookie.txt','r').read() != '':
             if InputFunction.inputyn(37):
-                NetworkFunction.cookie.load('cookie.txt', ignore_discard=True, ignore_expires=True)
+                cookie.load('cookie.txt', ignore_discard=True, ignore_expires=True)
                 qk()
                 flag = True
                 print log[58]
@@ -173,7 +65,7 @@ def uptk():
                 print log[39]
                 time.sleep(2)
                 continue
-    NetworkFunction.cookie.save(ignore_discard=True, ignore_expires=True)
+    cookie.save(ignore_discard=True, ignore_expires=True)
     while 1:
         Uuid = NetworkFunction.UUID()
         DataProcessing_ = NetworkFunction.UuidData(Uuid)
@@ -241,7 +133,7 @@ def uptk():
             qk()
             print x[3][1].decode("utf-8").encode('gbk')
             time.sleep(2)
-        NetworkFunction.cookie.save(ignore_discard=True, ignore_expires=True)
+        cookie.save(ignore_discard=True, ignore_expires=True)
     qk()
     
 def copy():
@@ -252,10 +144,12 @@ def copy():
         print log[43]
         twousername,twopassword = LandFunction.inuserlog(flag)
         textqueue = multiprocessing.Queue()
-        copylandAPlay = multiprocessing.Process(target=copylandA, args=(oneusername,onepassword,textqueue,))
-        copylandBPlay = multiprocessing.Process(target=copylandB, args=(twousername,twopassword,textqueue,))
+        copylandAPlay = multiprocessing.Process(target=CopyProcessing.copylandA, args=(oneusername,onepassword,textqueue,))
+        copylandBPlay = multiprocessing.Process(target=CopyProcessing.copylandB, args=(twousername,twopassword,textqueue,))
+        copyProcessing = multiprocessing.Process(target=CopyProcessing.CopyProcessing, args=(textqueue,))
         copylandAPlay.start()
         copylandBPlay.start()
+        copyProcessing.start()
         copylandAPlay.join()
         msvcrt.getch()
         

@@ -8,14 +8,20 @@ import cookielib
 from bs4 import BeautifulSoup
 import random
 import os
+def Cookie():
+    Cookiename = 'cookie.txt'
+    cookie = cookielib.MozillaCookieJar(Cookiename)
+    handler = urllib2.HTTPCookieProcessor(cookie)
+    opener = urllib2.build_opener(handler)
+    urllib2.install_opener(opener)
+    return cookie
 
-Cookiename = 'cookie.txt'
-cookie = cookielib.MozillaCookieJar(Cookiename)
-handler = urllib2.HTTPCookieProcessor(cookie)
-opener = urllib2.build_opener(handler)
-urllib2.install_opener(opener)
-
-
+def CopyCookie():
+    cookie = cookielib.CookieJar()
+    handler = urllib2.HTTPCookieProcessor(cookie)
+    opener = urllib2.build_opener(handler)
+    urllib2.install_opener(opener)
+    
 def Login(username,password):
     LogUrl = 'http://ids2.bitc.edu.cn/amserver/UI/Login'
     LogData = {'IDToken' : '0',

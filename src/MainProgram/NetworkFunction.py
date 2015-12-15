@@ -53,6 +53,17 @@ def UUID():
     Uuid = str(Uid[len(Uid)-2]).split("'")
     return Uuid[1]
 
+def userId():
+    Url = 'http://elearning.bitc.edu.cn/zecBeixin/student/myCourse/myCourse.html'
+    texttemp = urllib2.urlopen(Url).read()
+    Soup = BeautifulSoup(texttemp, "html.parser")
+    a = Soup.findAll('input')
+    b = Soup.findAll(name='span' ,attrs={'class':'smile_ic icon fl'})
+    userld = re.search('(value=")(\d*)',str(a[0])).group(2)
+    lens = len(str(b))
+    name = str(b)[32:lens-23]
+    return userld,name
+    
 def UuidData(Uuid):
     UrlTime = time.strftime("%Y%m%d")
     DataUrl = "http://elearning.bitc.edu.cn/zecBeixin/student/myCourse/zui_servlet?sid=proc__searchStudentCourseClassRel&UUID="+Uuid
@@ -71,8 +82,8 @@ def UuidData(Uuid):
         list[(i-1)].append(re.search('(courseId":)(\S*)(,"courseIds)',Processing).group(2))
         list[(i-1)].append(re.search('(classId":)(\S*)(,"classIds)',Processing).group(2))
         list[(i-1)].append(re.search('(credit":)(\S*)(,"hasUpdate)',Processing).group(2))
-        list[(i-1)].append(re.search('(courseName":")(\S*)(","courseNum)',Processing).group(2))
-        list[(i-1)].append(re.search('(userName":")(\S*)(","userNameOrNumber)',Processing).group(2))
+        list[(i-1)].append(re.search('(courseName":")(\S*)(","courseNum)',Processing).group(2).replace(' ',''))
+        list[(i-1)].append(re.search('(userName":")(\S*)(","userNameOrNumber)',Processing).group(2).replace(' ',''))
         list[(i-1)].append(re.search('(chooseCourse":)(\d)',Processing).group(2))
     return list
 
@@ -103,7 +114,7 @@ def task(courseId,classId,Uuid):
     for i in range(1, (len(TP)-1) + 1):
         Processing = TP[i]
         list[(i-1)].append(re.search('(num":)(\d*)(,"opFlag)',Processing).group(2))
-        list[(i-1)].append(re.search('(taskLesson":0,"taskName":")(.*?)(","taskNum":")',Processing).group(2))
+        list[(i-1)].append(re.search('(taskLesson":0,"taskName":")(.*?)(","taskNum":")',Processing).group(2).replace(' ',''))
         list[(i-1)].append(re.search('(taskId":)(\d*)(,"taskIds)',Processing).group(2))
         list[(i-1)].append(re.search('(userTaskId":)(\d*)(}},"isStart)',Processing).group(2))
         list[(i-1)].append(re.search('({"flag":)(\d*)(,"count)',Processing).group(2))
@@ -163,4 +174,22 @@ def UpTask(Uuid,taskId,userTaskId,text,FileName):
     for i in TaskFlag:
         x.append(i.split(':'))
     return x
+
+def TaskLog(uuid,userId,taskid):
+    TaskLogs = []
+    url = 'http://elearning.bitc.edu.cn/zecBeixin/student/courseHomework/zui_servlet?sid=task__getUserTaskById&UUID='+uuid
+    data = {'userId':userId,'taskId':taskid}
+    TaskLogData = urllib.urlencode(data)
+    Request = urllib2.Request(url, TaskLogData)
+    Response = urllib2.urlopen(Request).read()
+    TaskLogs.append(re.search('(filePath":")(\S*)(","fileRelId)',Response).group(2))
+    TaskLogs.append('')
+    TaskLogs.append(re.search('(fileSize":")(\S*)(","fileStatus)',Response).group(2))
+    TaskLogs.append(re.search('(fileExtendName":")(\S*)(","fileName)',Response).group(2))
+    return TaskLogs
+    
+    
+    
+    
+    
     

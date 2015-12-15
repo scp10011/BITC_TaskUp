@@ -12,6 +12,7 @@ import msvcrt
 import urllib
 import urllib2
 import cookielib
+import threading
 import multiprocessing
 import win32ui,win32api,win32con
 from bs4 import BeautifulSoup
@@ -145,12 +146,41 @@ def copy():
         print log[43]
         twousername,twopassword = LandFunction.inuserlog(flag)
         textqueue = multiprocessing.Queue()
-        copylandAPlay = multiprocessing.Process(target=CopyProcessing.copylandA, args=(oneusername,onepassword,textqueue,))
-        copylandBPlay = multiprocessing.Process(target=CopyProcessing.copylandB, args=(twousername,twopassword,textqueue,))
+        Aerrorqueue = multiprocessing.Queue()
+        Berrorqueue = multiprocessing.Queue()
+        copylandAPlay = multiprocessing.Process(target=CopyProcessing.copylandA, args=(oneusername,onepassword,textqueue,Aerrorqueue,))
+        copylandBPlay = multiprocessing.Process(target=CopyProcessing.copylandB, args=(twousername,twopassword,textqueue,Berrorqueue,))
         #copyProcessing = multiprocessing.Process(target=CopyProcessing.CopyProcessing, args=(textqueue,))
         copylandAPlay.start()
         copylandBPlay.start()
-        CopyProcessing.CopyProcessing(textqueue)
+        
+        CopyProc = threading.Thread(target=CopyProcessing.CopyProcessing,args=(textqueue,))
+        CopyProc.setDaemon(True)
+        CopyProc.start()
+        
+        while 1:
+            if Aerrorqueue.qsize()==1:
+                Errors = Aerrorqueue.get(True)
+                if Errors == 16: 
+                    print 'A',log[16]
+                    temppw = InputFunction.inputpw(7)
+                    Aerrorqueue.put(1)
+                    Aerrorqueue.put(temppw)
+                    time.sleep(2)
+                elif Errors == 10060:
+                    print log[33]
+            elif Berrorqueue.qsize()==1:
+                Errors = Berrorqueue.get(True)
+                if Errors == 16: 
+                    print 'B',log[16]
+                    temppw = InputFunction.inputpw(7)
+                    Berrorqueue.put(1)
+                    Berrorqueue.put(temppw)
+                    time.sleep(2)
+                elif Errors == 10060:
+                    print log[33]
+            
+                
         
         copylandAPlay.join()
         msvcrt.getch()

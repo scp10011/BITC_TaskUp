@@ -62,6 +62,7 @@ def copylandA(username,password,textqueue):
     textqueue.put('My_is_A')
     while 1:
         if textqueue.qsize() == 0:
+            print len(tasklist)
             textqueue.put({'A':[tasklist,lenlist]})
     
     
@@ -112,7 +113,8 @@ def copylandB(username,password,textqueue):
     textqueue.put('My_is_B')
     while 1:
         if textqueue.qsize() == 0:
-            textqueue.put({'B':[tasklist,lenlist,PrintDataProcessing_]})
+            print len(tasklist)
+            textqueue.put({'B':[tasklist,lenlist,PrintDataProcessing_,DataProcessing]})
     
 def CopyProcessing(textqueue):
     print 'ok'
@@ -128,6 +130,8 @@ def CopyProcessing(textqueue):
             temp1 = textqueue.get(True)
             temp2 = textqueue.get(True)
             break
+        else :
+            continue
     if temp1.get('A') != None :
         listA = temp1.get('A')
         listB = temp2.get('B')
@@ -136,11 +140,13 @@ def CopyProcessing(textqueue):
         listB = temp1.get('B')
     tasklistA = listA[0]
     tasklistB = listB[0]
-    tasklistA.sort()
-    tasklistB.sort
+    #tasklistA.sort()
+    #tasklistB.sort
     lenlistA = listA[1]
     lenlistB = listB[1]
-    PrintDataProcessing = listB[2]
+    PrintDataProcessing_ = listB[2]
+    DataProcessing_ = listB[3]
+    '''
     temptasklistA = tasklistA[:]
     temptasklistB = tasklistB[:]
     for i in range(0, len(temptasklistA)-1 +1):
@@ -148,7 +154,7 @@ def CopyProcessing(textqueue):
         del temptasklistB[i][4]
     if temptasklistA != temptasklistB.sort():
         print 'ok'
-    
+    '''
     TaskFlagA =[]
     TaskFlagB =[]
     for i in range(0, len(tasklistA)-1 +1):
@@ -156,15 +162,15 @@ def CopyProcessing(textqueue):
         TaskFlagB.append(tasklistB[i][4])
     TaskFlag = {'A':TaskFlagA,'B':TaskFlagB}
     fomart = 'abcdefghijklmnopqrstuvwxyz0123456789^$.*+-?=!:|\/()[]{} '
-    colsTEXT = len(lenlistA)*27
+    colsTEXT = len(PrintDataProcessing_)*27
     os.system('mode con cols=%s lines=50'%colsTEXT)
     TaskInList = []
     while 1:
         TaskIdList = []
         qk()
         print log[44]
-        for l in PrintDataProcessing:
-            PrintData = str(l[3]).decode("utf-8").encode('gbk')[0:14].center(16)
+        for l in PrintDataProcessing_:
+            PrintData = str(l[3].decode("utf-8").encode('gbk'))[0:14].center(16)
             PrintData = PrintData.lower()
             qweData = 0
             for c in PrintData:
@@ -176,10 +182,10 @@ def CopyProcessing(textqueue):
                 lens = 13
             print('%-5s%-16.16s%-4s' % (log[46].center(5),str(l[3].decode("utf-8").encode('gbk'))[0:lens].center(16),log[47].center(4))),
         print ''
-        for li in range(0, (max(lenlistA)-1) + 1):
-            for ll in range(0, (len(PrintDataProcessing)-1) + 1):
+        for li in range(0, (max(lenlistB)-1) + 1):
+            for ll in range(0, (len(DataProcessing_)-1) + 1):
                 try:
-                    PrintData = str(tasklistA[ll][li][1].decode("utf-8").encode('gbk'))[0:14].center(16)
+                    PrintData = str(tasklistB[ll][li][1].decode("utf-8").encode('gbk'))[0:14].center(16)
                     PrintData = PrintData.lower()
                     qweData = 0
                     for c in PrintData:
@@ -189,15 +195,16 @@ def CopyProcessing(textqueue):
                                 lens = 14
                             else :
                                 lens = 13
-                    if tasklistA[ll][li][1] != '':
+                    if tasklistB[ll][li][1] != '':
                         TaskIdList.append((ll+1)*100+li+1)
-                    print ('%-5s%-16.16s%-4s' % (str(((ll+1)*100+li+1)).center(5),str(tasklistA[ll][li][1].decode("utf-8").encode('gbk'))[0:lens].center(16),''.center(4))),
+                    print ('%-5s%-16.16s%-4s' % (str(((ll+1)*100+li+1)).center(5),str(tasklistB[ll][li][1].decode("utf-8").encode('gbk'))[0:lens].center(16),''.center(4))),
                 except:
                     print ('%-5s%-16.16s%-4s' % (''.center(5),"".center(20),''.center(4))),
             print ''    
         TaskIn = InputFunction.inputln(45, TaskIdList)
         if TaskIn:
             TaskInList.append(TaskIn)
+            continue
         else :
             print log[52],TaskInList
             time.sleep(3)

@@ -1,5 +1,5 @@
-	    fomart = 'abcdefghijklmnopqrstuvwxyz0123456789^$.*+-?=!:|\/()[]{} '
-	    colsTEXT = len(PrintDataProcessing_)*27
+	    	fomart = 'abcdefghijklmnopqrstuvwxyz0123456789^$.*+-?=!:|\/()[]{} '
+	    	colsTEXT = len(PrintDataProcessing_)*27
             os.system('mode con cols=%s lines=50'%colsTEXT)
             TaskInList = []
             while 1:

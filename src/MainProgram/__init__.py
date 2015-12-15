@@ -16,6 +16,7 @@ import multiprocessing
 import win32ui,win32api,win32con
 from bs4 import BeautifulSoup
 from text import *
+from time import sleep
 
 def qk():
     os.system('cls')
@@ -146,10 +147,11 @@ def copy():
         textqueue = multiprocessing.Queue()
         copylandAPlay = multiprocessing.Process(target=CopyProcessing.copylandA, args=(oneusername,onepassword,textqueue,))
         copylandBPlay = multiprocessing.Process(target=CopyProcessing.copylandB, args=(twousername,twopassword,textqueue,))
-        copyProcessing = multiprocessing.Process(target=CopyProcessing.CopyProcessing, args=(textqueue,))
+        #copyProcessing = multiprocessing.Process(target=CopyProcessing.CopyProcessing, args=(textqueue,))
         copylandAPlay.start()
         copylandBPlay.start()
-        copyProcessing.start()
+        CopyProcessing.CopyProcessing(textqueue)
+        
         copylandAPlay.join()
         msvcrt.getch()
         

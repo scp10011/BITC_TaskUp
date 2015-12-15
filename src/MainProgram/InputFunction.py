@@ -40,8 +40,8 @@ def inputln(SN,LIST):
     while 1:
         try:
             intext = raw_input(log[SN])
-        except:
-            print log[12]
+        except Exception as e:
+            print e
             continue
         if intext.isdigit():
             intext = int(intext)

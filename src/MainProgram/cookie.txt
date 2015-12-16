@@ -1,0 +1,10 @@
+# Netscape HTTP Cookie File
+# http://curl.haxx.se/rfc/cookie_spec.html
+# This is a generated file!  Do not edit.
+
+.bitc.edu.cn	TRUE	/	FALSE		AMAuthCookie	AQIC5wM2LY4SfcycuFFFNhhgLudwbJXDyjSAtL0D51q3LLc%3D%40AAJTSQACMDI%3D%23
+.bitc.edu.cn	TRUE	/	FALSE		amlbcookie	02
+.bitc.edu.cn	TRUE	/	FALSE		iPlanetDirectoryPro	AQIC5wM2LY4SfcycuFFFNhhgLudwbJXDyjSAtL0D51q3LLc%3D%40AAJTSQACMDI%3D%23
+elearning.bitc.edu.cn	FALSE	/	FALSE	1450343197	partCode	""
+elearning.bitc.edu.cn	FALSE	/	FALSE	1450343197	passport	$d_0889ee78df288d538fde9be4304b372f&$s_10829
+elearning.bitc.edu.cn	FALSE	/zecBeixin/	FALSE		JSESSIONID	20D50D3AC0F79217B231FC0E6D5D6993

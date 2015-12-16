@@ -17,7 +17,6 @@ def logtext():
 
 def copylandA(username,password,textqueue,Aerrorqueue):
     NetworkFunction.CopyCookie()
-    userId,name = NetworkFunction.userId()
     while 1:
         LogFlag,Code = NetworkFunction.Login(username,password)
         if LogFlag and Code==200:
@@ -34,6 +33,7 @@ def copylandA(username,password,textqueue,Aerrorqueue):
         try:
             Uuid = NetworkFunction.UUID()
             #DataProcessing为请求到课程信息原始数据
+            userId,name = NetworkFunction.userId()
             DataProcessing = NetworkFunction.UuidData(Uuid)
             #检测返回数据为空后跳出
             if DataProcessing == '':
@@ -78,13 +78,15 @@ def copylandA(username,password,textqueue,Aerrorqueue):
     while 1:
         if textqueue.qsize() == 1:
             TaskUpList = textqueue.get(True)
+            print TaskUpList
             break
     while 1:
         TaskLogs = []
         for i in TaskUpList:
+            print i
             taskid = tasklist[i[0]][i[1]][2]
             TaskLog = NetworkFunction.TaskLog(Uuid,userId,taskid)
-            TaskLog[1]='%s.%s'(name,TaskLog[3])
+            TaskLog[1]='%s.%s'%(name,TaskLog[3])
             TaskLogs.append(TaskLog)
         break
     while 1:
@@ -191,8 +193,6 @@ def CopyProcessing(textqueue):
         listB = temp1.get('B')
     tasklistA = listA[0]
     tasklistB = listB[0]
-    #tasklistA.sort()
-    #tasklistB.sort
     lenlistA = listA[1]
     lenlistB = listB[1]
     PrintDataProcessing = listB[2]
@@ -207,7 +207,7 @@ def CopyProcessing(textqueue):
     
     while 1:
         TaskIdList = []
-        #qk()
+        qk()
         print log[44]
         for l in PrintDataProcessing:
             #获取课程名并裁剪
@@ -260,7 +260,7 @@ def CopyProcessing(textqueue):
     while 1:
         TaskUpList=[]
         for i in TaskInList:
-            TaskUpList.append([int(i[0:1])-1,int(i[1:3])-1])
+            TaskUpList.append([int(str(i)[0:1])-1,int(str(i)[1:3])-1])
         textqueue.put(TaskUpList)
             
     
